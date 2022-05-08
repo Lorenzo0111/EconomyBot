@@ -11,7 +11,7 @@ module.exports = class LeaderboardCommand {
     async run(interaction) {
         await interaction.deferReply();
 
-        const users = await User.find({}).sort({ balance: -1 }).exec();
+        const users = await User.find({}).sort({ balance: -1 }).limit(10).exec();
         if (!users) {
             const embed = new MessageEmbed()
                 .setTitle("Error")
@@ -26,7 +26,7 @@ module.exports = class LeaderboardCommand {
 
         for (let i = 0; i < 10; i++) {
             if (!users[i]) break;
-            description += `${i + 1}. <@${users[i].id}>`, `${users[i].balance} coins`;
+            description += `${i + 1}. <@${users[i].id}> - ${users[i].balance} coins`;
             description += "\n";
         }
 
